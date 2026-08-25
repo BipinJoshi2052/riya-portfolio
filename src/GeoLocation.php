@@ -133,13 +133,17 @@ final class GeoLocation
 
     private static function save(string $ip, array $fields): void
     {
-        $fields['ip_address'] = $ip;
         $fields['resolved_at'] = date('Y-m-d H:i:s');
 
         $columns = array_keys($fields);
         $set = implode(', ', array_map(fn ($c) => "$c = :$c", $columns));
 
-        $sql = 'UPDATE ip_locations SET ' . $set . ' WHERE ip_address = :ip_address';
+        // Native (non-emulated) MySQL prepares reject reusing the same named
+        // placeholder twice, so the WHERE clause gets its own distinct name
+        // rather than sharing :ip_address with a SET column.
+        $fields['where_ip'] = $ip;
+
+        $sql = 'UPDATE ip_locations SET ' . $set . ' WHERE ip_address = :where_ip';
         Database::connection()->prepare($sql)->execute($fields);
     }
 }
