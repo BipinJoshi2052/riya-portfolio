@@ -29,7 +29,7 @@ $total = (int) $pdo->query('SELECT COUNT(*) FROM page_views')->fetchColumn();
 
 $stmt = $pdo->prepare(
     'SELECT pv.id, pv.ip_address, pv.page, pv.user_agent, pv.created_at,
-            l.display_name, l.city, l.region, l.country, l.status AS location_status
+            l.display_name, l.city, l.region, l.country, l.latitude, l.longitude, l.status AS location_status
      FROM page_views pv
      LEFT JOIN ip_locations l ON l.ip_address = pv.ip_address
      ORDER BY pv.created_at DESC
@@ -50,7 +50,7 @@ $activePage = 'page-visits';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Page Visits — Admin</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
 </head>
 <body class="admin-body">
     <?php require __DIR__ . '/_header.php'; ?>
@@ -82,6 +82,14 @@ $activePage = 'page-visits';
                             <td>
                                 <?php if ($v['location_status'] === 'resolved'): ?>
                                     <?= e($v['display_name'] ?: trim(($v['city'] ?? '') . ', ' . ($v['country'] ?? ''), ', ')) ?>
+                                    <?php if ($v['latitude'] !== null && $v['longitude'] !== null): ?>
+                                        <br>
+                                        <span class="muted" style="font-size:0.8em">
+                                            <?= e($v['latitude']) ?>, <?= e($v['longitude']) ?>
+                                            &middot;
+                                            <a href="https://www.openstreetmap.org/?mlat=<?= e($v['latitude']) ?>&mlon=<?= e($v['longitude']) ?>#map=14/<?= e($v['latitude']) ?>/<?= e($v['longitude']) ?>" target="_blank" rel="noopener">view on map</a>
+                                        </span>
+                                    <?php endif; ?>
                                 <?php elseif ($v['location_status'] === 'private'): ?>
                                     <span class="muted">Local / private IP</span>
                                 <?php elseif ($v['location_status'] === 'failed'): ?>

@@ -64,6 +64,19 @@ function csrf_verify(): bool
         && hash_equals($_SESSION['csrf_token'], $token);
 }
 
+/**
+ * Appends the asset file's mtime as a cache-busting query string, so a
+ * redeploy invalidates browsers' Cache-Control-driven caching immediately
+ * instead of visitors needing to hard-refresh.
+ */
+function asset_url(string $path): string
+{
+    $file = PUBLIC_PATH . $path;
+    $version = is_file($file) ? filemtime($file) : time();
+
+    return $path . '?v=' . $version;
+}
+
 function flash(string $key, ?string $message = null): ?string
 {
     if ($message !== null) {

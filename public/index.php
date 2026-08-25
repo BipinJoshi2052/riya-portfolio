@@ -160,7 +160,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 <meta name="twitter:description" content="<?= e($pageDescription) ?>">
 <meta name="twitter:image" content="<?= e($ogImage) ?>">
 
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
 <script type="application/ld+json"><?= $personLdJson ?></script>
 </head>
 <body>
@@ -448,6 +448,6 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 </div>
 
 <script>window.__PROJECTS__ = <?= $projectsJson ?>;</script>
-<script src="/assets/js/main.js"></script>
+<script src="<?= e(asset_url('/assets/js/main.js')) ?>"></script>
 </body>
 </html>
