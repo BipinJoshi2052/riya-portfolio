@@ -416,10 +416,10 @@ textarea.rp-input { resize: vertical; min-height: 120px; line-height: 1.6; }
 .admin-body main { padding: 2rem 1.5rem; }
 .admin-body h1 { font-weight: 800; letter-spacing: -0.02em; }
 
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(245,245,247,0.1); white-space: nowrap; }
-.ua-cell { max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+.table-wrap { overflow-x: auto; } /* safety net only; the table itself no longer needs it */
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; table-layout: fixed; }
+th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(245,245,247,0.1); word-break: break-word; overflow-wrap: break-word; }
+.ua-cell { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .empty { color: #8a8a8a; text-align: center; padding: 2rem; }
 
 .pagination { display: flex; gap: 0.4rem; margin-top: 1.5rem; flex-wrap: wrap; }

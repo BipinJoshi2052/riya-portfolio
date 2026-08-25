@@ -61,6 +61,13 @@ $activePage = 'page-visits';
 
         <div class="table-wrap">
             <table>
+                <colgroup>
+                    <col style="width:16%">
+                    <col style="width:12%">
+                    <col style="width:10%">
+                    <col style="width:34%">
+                    <col style="width:28%">
+                </colgroup>
                 <thead>
                     <tr>
                         <th>When</th>
@@ -98,7 +105,7 @@ $activePage = 'page-visits';
                                     <span class="muted">Resolving…</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="ua-cell" title="<?= e($v['user_agent']) ?>"><?= e($v['user_agent']) ?></td>
+                            <td class="ua-cell" title="<?= e($v['user_agent']) ?>"><?= e(simplify_user_agent($v['user_agent'])) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
