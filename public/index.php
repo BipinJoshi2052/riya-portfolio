@@ -24,8 +24,8 @@ $siteUrl = $config['app']['url'] !== '' ? $config['app']['url'] : (
 );
 $ogImage = $siteUrl . '/assets/img/riya-portrait.png';
 
-$pageTitle = 'Riya Pradhan — Strategic HR Business Partner | Certified McHRBP';
-$pageDescription = 'Riya Pradhan is a Certified HR Business Partner (McHRBP) with 7+ years building HR functions across tech, fintech, and logistics in Kathmandu, Nepal — strategic HR, organizational development, talent acquisition, and HR technology & analytics.';
+$pageTitle = 'Riya Pradhan — Strategic HR Business Partner | McHRBP';
+$pageDescription = 'Riya Pradhan, Certified HR Business Partner (McHRBP) with 7+ years in strategic HR, organizational development, and talent acquisition across Nepal.';
 
 $projects = [
     [

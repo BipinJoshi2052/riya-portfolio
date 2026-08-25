@@ -70,7 +70,7 @@ $activePage = 'messages';
                             &lt;<a href="mailto:<?= e($m['email']) ?>"><?= e($m['email']) ?></a>&gt;
                             <?php if (!$m['is_read']): ?><span class="badge">New</span><?php endif; ?>
                         </div>
-                        <time><?= e($m['created_at']) ?></time>
+                        <time><?= e(date('M j, Y g:i A', strtotime($m['created_at']))) ?></time>
                     </header>
 
                     <?php if ($m['subject']): ?>

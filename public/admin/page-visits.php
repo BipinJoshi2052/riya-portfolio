@@ -76,7 +76,7 @@ $activePage = 'page-visits';
                     <?php endif; ?>
                     <?php foreach ($visits as $v): ?>
                         <tr>
-                            <td><?= e($v['created_at']) ?></td>
+                            <td><?= e(date('M j, Y g:i A', strtotime($v['created_at']))) ?></td>
                             <td><?= e($v['ip_address']) ?></td>
                             <td><?= e($v['page']) ?></td>
                             <td>
