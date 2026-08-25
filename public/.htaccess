@@ -1,0 +1,19 @@
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+</IfModule>
+
+RewriteEngine On
+
+# Block direct access to internal/partial files.
+RewriteRule ^bootstrap\.php$ - [F,L]
+RewriteRule ^admin/_ - [F,L]
+
+# Pretty URLs: /login -> login.php, /admin/page-visits -> admin/page-visits.php, etc.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]

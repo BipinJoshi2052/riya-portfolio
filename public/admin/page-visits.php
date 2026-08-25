@@ -1,0 +1,104 @@
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../bootstrap.php';
+
+use App\Auth;
+use App\Database;
+use App\GeoLocation;
+
+Auth::requireLogin();
+
+// Resolve a handful of not-yet-located IPs on each admin page load, so the
+// locations fill in progressively without needing a cron job or slowing
+// down real visitors (this is the only place geolocation lookups happen).
+GeoLocation::resolvePending(5);
+
+$perPage = 50;
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$offset = ($page - 1) * $perPage;
+
+$pdo = Database::connection();
+
+$total = (int) $pdo->query('SELECT COUNT(*) FROM page_views')->fetchColumn();
+
+$stmt = $pdo->prepare(
+    'SELECT pv.id, pv.ip_address, pv.page, pv.user_agent, pv.created_at,
+            l.display_name, l.city, l.region, l.country, l.status AS location_status
+     FROM page_views pv
+     LEFT JOIN ip_locations l ON l.ip_address = pv.ip_address
+     ORDER BY pv.created_at DESC
+     LIMIT :limit OFFSET :offset'
+);
+$stmt->bindValue('limit', $perPage, PDO::PARAM_INT);
+$stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$visits = $stmt->fetchAll();
+
+$totalPages = max(1, (int) ceil($total / $perPage));
+$activePage = 'page-visits';
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Visits — Admin</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="admin-body">
+    <?php require __DIR__ . '/_header.php'; ?>
+
+    <main class="container">
+        <h1>Page Visits</h1>
+        <p class="muted"><?= number_format($total) ?> total view<?= $total === 1 ? '' : 's' ?></p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>When</th>
+                        <th>IP address</th>
+                        <th>Page</th>
+                        <th>Location</th>
+                        <th>User agent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!$visits): ?>
+                        <tr><td colspan="5" class="empty">No page views recorded yet.</td></tr>
+                    <?php endif; ?>
+                    <?php foreach ($visits as $v): ?>
+                        <tr>
+                            <td><?= e($v['created_at']) ?></td>
+                            <td><?= e($v['ip_address']) ?></td>
+                            <td><?= e($v['page']) ?></td>
+                            <td>
+                                <?php if ($v['location_status'] === 'resolved'): ?>
+                                    <?= e($v['display_name'] ?: trim(($v['city'] ?? '') . ', ' . ($v['country'] ?? ''), ', ')) ?>
+                                <?php elseif ($v['location_status'] === 'private'): ?>
+                                    <span class="muted">Local / private IP</span>
+                                <?php elseif ($v['location_status'] === 'failed'): ?>
+                                    <span class="muted">Unavailable</span>
+                                <?php else: ?>
+                                    <span class="muted">Resolving…</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="ua-cell" title="<?= e($v['user_agent']) ?>"><?= e($v['user_agent']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <?php if ($totalPages > 1): ?>
+            <nav class="pagination">
+                <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+                    <a href="?page=<?= $p ?>" class="<?= $p === $page ? 'active' : '' ?>"><?= $p ?></a>
+                <?php endfor; ?>
+            </nav>
+        <?php endif; ?>
+    </main>
+</body>
+</html>
