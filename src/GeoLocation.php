@@ -110,6 +110,11 @@ final class GeoLocation
 
     private static function httpGet(string $url): ?string
     {
+        if (!function_exists('curl_init')) {
+            error_log('GeoLocation: the curl PHP extension is not enabled, cannot resolve locations.');
+            return null;
+        }
+
         $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,

@@ -13,7 +13,11 @@ Auth::requireLogin();
 // Resolve a handful of not-yet-located IPs on each admin page load, so the
 // locations fill in progressively without needing a cron job or slowing
 // down real visitors (this is the only place geolocation lookups happen).
-GeoLocation::resolvePending(5);
+try {
+    GeoLocation::resolvePending(5);
+} catch (\Throwable $e) {
+    error_log('GeoLocation::resolvePending failed: ' . $e->getMessage());
+}
 
 $perPage = 50;
 $page = max(1, (int) ($_GET['page'] ?? 1));
