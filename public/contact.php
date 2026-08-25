@@ -46,6 +46,7 @@ try {
         'message' => $message,
         'ip' => $ip,
     ]);
+    $messageId = (int) Database::connection()->lastInsertId();
 } catch (\Throwable $e) {
     error_log('Contact form DB insert failed: ' . $e->getMessage());
     flash('contact_error', 'Sorry, something went wrong on our end. Please try again shortly.');
@@ -59,7 +60,7 @@ try {
         'subject' => $subject,
         'message' => $message,
         'ip_address' => $ip,
-    ]);
+    ], $messageId);
 } catch (\Throwable $e) {
     error_log('Contact mail send failed: ' . $e->getMessage());
     // The message is already saved, so we don't fail the request over email delivery.

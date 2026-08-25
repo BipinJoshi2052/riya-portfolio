@@ -45,3 +45,17 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY idx_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- One row per outgoing email attempt (contact-form notifications for now),
+-- so delivery failures are visible without digging through server logs.
+CREATE TABLE IF NOT EXISTS email_logs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    message_id INT UNSIGNED NULL,
+    recipients VARCHAR(512) NOT NULL,
+    subject VARCHAR(255) NULL,
+    status ENUM('success', 'failed') NOT NULL,
+    error_message TEXT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_created (created_at),
+    KEY idx_message (message_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
