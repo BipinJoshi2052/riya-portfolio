@@ -15,7 +15,9 @@ final class Mailer
         require_once __DIR__ . '/../config/config.php';
         $mail = app_config()['mail'];
 
-        if ($mail['host'] === '' || $mail['send_to'] === '') {
+        $recipients = self::parseRecipients($mail['send_to']);
+
+        if ($mail['host'] === '' || !$recipients) {
             error_log('Mailer: SMTP or SEND_MAIL_TO not configured, skipping send.');
             return false;
         }
@@ -32,7 +34,9 @@ final class Mailer
         $mailer->CharSet = 'UTF-8';
 
         $mailer->setFrom($mail['from_address'], $mail['from_name']);
-        $mailer->addAddress($mail['send_to']);
+        foreach ($recipients as $recipient) {
+            $mailer->addAddress($recipient);
+        }
         $mailer->addReplyTo($message['email'], $message['name']);
 
         $mailer->Subject = 'New contact form message: ' . ($message['subject'] ?: 'No subject');
@@ -41,6 +45,17 @@ final class Mailer
         $mailer->AltBody = self::buildPlainBody($message);
 
         return $mailer->send();
+    }
+
+    /** @return string[] */
+    private static function parseRecipients(string $sendTo): array
+    {
+        $emails = array_map('trim', explode(',', $sendTo));
+
+        return array_values(array_filter(
+            $emails,
+            fn ($email) => $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false
+        ));
     }
 
     private static function buildHtmlBody(array $m): string
