@@ -161,6 +161,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 <meta name="twitter:image" content="<?= e($ogImage) ?>">
 
 <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+<?= theme_style_tag() ?>
 <script type="application/ld+json"><?= $personLdJson ?></script>
 </head>
 <body>
@@ -172,17 +173,17 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
     <a href="#top" class="rp-logo" aria-label="Riya Pradhan — home">RP<span>.</span></a>
     <div class="rp-mascot" id="rp-mascot" aria-hidden="true">
         <svg class="rp-mascot-head" width="52" height="52" viewBox="0 0 100 100">
-            <path d="M22 34 L18 12 L40 24 Z" fill="#1a1a1a" stroke="#ccff00" stroke-width="3" stroke-linejoin="round"></path>
-            <path d="M78 34 L82 12 L60 24 Z" fill="#1a1a1a" stroke="#ccff00" stroke-width="3" stroke-linejoin="round"></path>
-            <ellipse cx="50" cy="56" rx="33" ry="29" fill="#141414" stroke="#ccff00" stroke-width="3"></ellipse>
+            <path d="M22 34 L18 12 L40 24 Z" fill="#1a1a1a" stroke="var(--rp-primary)" stroke-width="3" stroke-linejoin="round"></path>
+            <path d="M78 34 L82 12 L60 24 Z" fill="#1a1a1a" stroke="var(--rp-primary)" stroke-width="3" stroke-linejoin="round"></path>
+            <ellipse cx="50" cy="56" rx="33" ry="29" fill="#141414" stroke="var(--rp-primary)" stroke-width="3"></ellipse>
             <g class="rp-mascot-eyes">
-                <ellipse class="rp-eye-l" cx="37" cy="52" rx="7.5" ry="8.5" fill="#ccff00"></ellipse>
-                <ellipse class="rp-eye-r" cx="63" cy="52" rx="7.5" ry="8.5" fill="#ccff00"></ellipse>
+                <ellipse class="rp-eye-l" cx="37" cy="52" rx="7.5" ry="8.5" fill="var(--rp-primary)"></ellipse>
+                <ellipse class="rp-eye-r" cx="63" cy="52" rx="7.5" ry="8.5" fill="var(--rp-primary)"></ellipse>
                 <circle class="rp-pupil-l" cx="37" cy="52" r="3.4" fill="#0a0a0a"></circle>
                 <circle class="rp-pupil-r" cx="63" cy="52" r="3.4" fill="#0a0a0a"></circle>
             </g>
-            <path d="M46 66 L50 70 L54 66" fill="none" stroke="#ccff00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-            <g stroke="rgba(204,255,0,0.45)" stroke-width="2" stroke-linecap="round">
+            <path d="M46 66 L50 70 L54 66" fill="none" stroke="var(--rp-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+            <g stroke="rgba(var(--rp-primary-rgb),0.45)" stroke-width="2" stroke-linecap="round">
                 <line x1="16" y1="62" x2="2" y2="58"></line>
                 <line x1="16" y1="68" x2="3" y2="70"></line>
                 <line x1="84" y1="62" x2="98" y2="58"></line>
@@ -262,7 +263,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
                     <div class="rp-proj-meta"><?= e($p['client']) ?> — <?= e($p['year']) ?></div>
                     <div class="rp-proj-view">
                         View details
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--rp-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                     </div>
                 </div>
             </button>
@@ -301,7 +302,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 <!-- TIMELINE -->
 <section class="rp-wrap" style="padding:0 40px 120px" aria-labelledby="rp-timeline-heading">
     <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:64px">
-        <span class="num" data-reveal style="font-family:'JetBrains Mono',monospace;color:#ccff00;font-size:13px">004</span>
+        <span class="num" data-reveal style="font-family:'JetBrains Mono',monospace;color:var(--rp-primary);font-size:13px">004</span>
         <h2 id="rp-timeline-heading" style="font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-0.02em;margin:0">Full Timeline</h2>
     </div>
     <div class="rp-timeline-wrap">
@@ -328,7 +329,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 <!-- CERTIFICATION -->
 <section class="rp-wrap" style="padding:0 40px 120px" aria-labelledby="rp-cert-heading">
     <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:44px">
-        <span class="num" data-reveal style="font-family:'JetBrains Mono',monospace;color:#ccff00;font-size:13px">005</span>
+        <span class="num" data-reveal style="font-family:'JetBrains Mono',monospace;color:var(--rp-primary);font-size:13px">005</span>
         <h2 id="rp-cert-heading" style="font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-0.02em;margin:0">Certification</h2>
     </div>
     <div class="rp-card rp-cert-grid" data-reveal>
@@ -363,7 +364,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 
             <button type="button" class="rp-card rp-contact-item" id="rp-copy-email" data-email="<?= e($contactEmail) ?>">
                 <span class="rp-card-body icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--rp-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg>
                 </span>
                 <span class="rp-card-body" style="min-width:0">
                     <span class="label rp-copy-label">Email — Click to copy</span>
@@ -373,13 +374,13 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 
             <a class="rp-card rp-contact-item linkedin-link" href="<?= e($linkedinUrl) ?>" target="_blank" rel="noopener">
                 <span class="rp-card-body icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--rp-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </span>
                 <span class="rp-card-body" style="min-width:0;flex:1">
                     <span class="label">LinkedIn</span>
                     <span class="value">linkedin.com/in/riya-p</span>
                 </span>
-                <svg class="rp-card-body arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                <svg class="rp-card-body arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--rp-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
         </div>
 
@@ -422,7 +423,7 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
 
             <div class="rp-card-body rp-form-state rp-form-sent" id="rp-form-sent" style="display:none">
                 <span class="check">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--rp-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </span>
                 <div class="headline">Message received</div>
                 <p></p>
@@ -447,7 +448,10 @@ $personLdJson = str_replace('</', '<\/', json_encode($personLd, JSON_UNESCAPED_S
     </div>
 </div>
 
-<script>window.__PROJECTS__ = <?= $projectsJson ?>;</script>
+<script>
+    window.__PROJECTS__ = <?= $projectsJson ?>;
+    window.__PRIMARY_RGB__ = '<?= e(hex_to_rgb_list(theme_primary_color())) ?>';
+</script>
 <script src="<?= e(asset_url('/assets/js/main.js')) ?>"></script>
 </body>
 </html>

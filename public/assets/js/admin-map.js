@@ -2,6 +2,7 @@
   'use strict';
 
   var points = window.__MAP_POINTS__ || [];
+  var PRIMARY_COLOR = window.__PRIMARY_COLOR__ || '#ccff00';
   var KATHMANDU = [85.3240, 27.7172];
 
   var vectorSource = new ol.source.Vector();
@@ -19,7 +20,7 @@
     style: new ol.style.Style({
       image: new ol.style.Circle({
         radius: 7,
-        fill: new ol.style.Fill({ color: '#ccff00' }),
+        fill: new ol.style.Fill({ color: PRIMARY_COLOR }),
         stroke: new ol.style.Stroke({ color: '#0a0a0a', width: 2 }),
       }),
     }),

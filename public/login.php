@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="robots" content="noindex, nofollow">
     <title>Admin Login — Riya Portfolio</title>
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+    <?= theme_style_tag() ?>
 </head>
 <body class="auth-body">
     <main class="auth-card">

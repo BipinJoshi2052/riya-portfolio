@@ -51,6 +51,43 @@ function simplify_user_agent(?string $ua): string
     return trim($browser . ' · ' . $os);
 }
 
+/** The admin-configured brand color (falls back to THEME_PRIMARY_COLOR in .env, then the design default). */
+function theme_primary_color(): string
+{
+    $isHex = fn ($v) => is_string($v) && preg_match('/^#[0-9a-fA-F]{6}$/', $v);
+
+    $envDefault = app_config()['theme_primary_color'] ?? '#ccff00';
+    $default = $isHex($envDefault) ? $envDefault : '#ccff00';
+
+    $color = \App\Settings::get('theme_primary_color', $default);
+
+    return $isHex($color) ? $color : $default;
+}
+
+/** Converts "#ccff00" to "204, 255, 0", for use inside rgba(var(--x), alpha). */
+function hex_to_rgb_list(string $hex): string
+{
+    $hex = ltrim($hex, '#');
+    if (strlen($hex) !== 6) {
+        return '204, 255, 0';
+    }
+
+    return implode(', ', [
+        hexdec(substr($hex, 0, 2)),
+        hexdec(substr($hex, 2, 2)),
+        hexdec(substr($hex, 4, 2)),
+    ]);
+}
+
+/** A <style> tag overriding the CSS theme variables with the admin's chosen color. */
+function theme_style_tag(): string
+{
+    $color = theme_primary_color();
+    $rgb = hex_to_rgb_list($color);
+
+    return '<style>:root{--rp-primary:' . e($color) . ';--rp-primary-rgb:' . e($rgb) . ';}</style>';
+}
+
 /** Best-effort real client IP, aware of common reverse-proxy / CDN headers. */
 function client_ip(): string
 {

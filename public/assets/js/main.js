@@ -3,6 +3,7 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isSmallViewport = window.matchMedia('(max-width: 980px)').matches;
+  var PRIMARY_RGB = window.__PRIMARY_RGB__ || '204, 255, 0';
 
   /* ---------- Nav scroll state + mascot visibility ---------- */
   var nav = document.getElementById('rp-nav');
@@ -115,7 +116,7 @@
       fctx.clearRect(0, 0, fw, fh);
       trail.forEach(function (pt, i) {
         var k = i / trail.length;
-        fctx.fillStyle = 'rgba(204,255,0,' + (0.1 * k * k) + ')';
+        fctx.fillStyle = 'rgba(' + PRIMARY_RGB + ',' + (0.1 * k * k) + ')';
         fctx.beginPath();
         fctx.arc(pt.x, pt.y, 1 + 3.5 * k, 0, Math.PI * 2);
         fctx.fill();
@@ -123,9 +124,9 @@
 
       var pulse = 0.55 + 0.45 * Math.pow((Math.sin(t * 2.6) + 1) / 2, 1.6);
       var halo = fctx.createRadialGradient(fly.x, fly.y, 0, fly.x, fly.y, 34);
-      halo.addColorStop(0, 'rgba(204,255,0,' + (0.42 * pulse) + ')');
-      halo.addColorStop(0.45, 'rgba(204,255,0,' + (0.12 * pulse) + ')');
-      halo.addColorStop(1, 'rgba(204,255,0,0)');
+      halo.addColorStop(0, 'rgba(' + PRIMARY_RGB + ',' + (0.42 * pulse) + ')');
+      halo.addColorStop(0.45, 'rgba(' + PRIMARY_RGB + ',' + (0.12 * pulse) + ')');
+      halo.addColorStop(1, 'rgba(' + PRIMARY_RGB + ',0)');
       fctx.fillStyle = halo;
       fctx.beginPath();
       fctx.arc(fly.x, fly.y, 34, 0, Math.PI * 2);
@@ -194,8 +195,8 @@
         f.phase += f.rate;
         var glow = 0.15 + 0.85 * Math.pow((Math.sin(f.phase) + 1) / 2, 2.2);
         var halo = hctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 9);
-        halo.addColorStop(0, 'rgba(204,255,0,' + (0.45 * glow) + ')');
-        halo.addColorStop(1, 'rgba(204,255,0,0)');
+        halo.addColorStop(0, 'rgba(' + PRIMARY_RGB + ',' + (0.45 * glow) + ')');
+        halo.addColorStop(1, 'rgba(' + PRIMARY_RGB + ',0)');
         hctx.fillStyle = halo;
         hctx.beginPath();
         hctx.arc(f.x, f.y, f.r * 9, 0, Math.PI * 2);

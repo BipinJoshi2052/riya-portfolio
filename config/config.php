@@ -46,6 +46,7 @@ function app_config(): array
             'send_to' => $_ENV['SEND_MAIL_TO'] ?? '',
         ],
         'page_view_cooldown_minutes' => (int) ($_ENV['PAGE_VIEW_COOLDOWN_MINUTES'] ?? 10),
+        'theme_primary_color' => $_ENV['THEME_PRIMARY_COLOR'] ?? '#ccff00',
     ];
 
     return $config;

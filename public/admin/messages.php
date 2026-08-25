@@ -49,6 +49,7 @@ $activePage = 'messages';
     <meta name="robots" content="noindex, nofollow">
     <title>Messages — Admin</title>
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+    <?= theme_style_tag() ?>
 </head>
 <body class="admin-body">
     <?php require __DIR__ . '/_header.php'; ?>

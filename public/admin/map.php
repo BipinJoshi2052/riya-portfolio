@@ -44,12 +44,13 @@ $activePage = 'map';
     <meta name="robots" content="noindex, nofollow">
     <title>Visitor Map — Admin</title>
     <link rel="stylesheet" href="<?= e(asset_url('/assets/css/style.css')) ?>">
+    <?= theme_style_tag() ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10.10.0/ol.css">
     <style>
         #rp-map { width: 100%; height: 70vh; min-height: 420px; border-radius: 12px; border: 1px solid rgba(245,245,247,0.14); background: #0d0d0d; }
         .rp-map-popup {
             position: absolute; left: -50%; bottom: 12px; transform: translateX(-50%);
-            background: #0d0d0d; border: 1px solid rgba(204,255,0,0.4); border-radius: 10px;
+            background: #0d0d0d; border: 1px solid rgba(var(--rp-primary-rgb), 0.4); border-radius: 10px;
             padding: 10px 14px; font-size: 13px; min-width: 200px; max-width: 280px;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6); display: none;
         }
@@ -74,7 +75,10 @@ $activePage = 'map';
         </div>
     </main>
 
-    <script>window.__MAP_POINTS__ = <?= $pointsJson ?>;</script>
+    <script>
+        window.__MAP_POINTS__ = <?= $pointsJson ?>;
+        window.__PRIMARY_COLOR__ = '<?= e(theme_primary_color()) ?>';
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/ol@10.10.0/dist/ol.js"></script>
     <script src="<?= e(asset_url('/assets/js/admin-map.js')) ?>"></script>
 </body>

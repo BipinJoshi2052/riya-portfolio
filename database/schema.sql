@@ -46,6 +46,14 @@ CREATE TABLE IF NOT EXISTS messages (
     KEY idx_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Generic key/value store for site settings (theme color today, anything
+-- else admin-configurable later) so new settings don't need new columns.
+CREATE TABLE IF NOT EXISTS settings (
+    setting_key VARCHAR(100) NOT NULL PRIMARY KEY,
+    setting_value TEXT NULL,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- One row per outgoing email attempt (contact-form notifications for now),
 -- so delivery failures are visible without digging through server logs.
 CREATE TABLE IF NOT EXISTS email_logs (
