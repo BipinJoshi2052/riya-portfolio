@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/riyaprad
+    - /bin/cp -R public/. $DEPLOYPATH/public_html/
+    - /bin/cp -R src $DEPLOYPATH/
+    - /bin/cp -R config $DEPLOYPATH/
+    - /bin/cp -R vendor $DEPLOYPATH/
+    - /bin/cp -R database $DEPLOYPATH/

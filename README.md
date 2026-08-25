@@ -50,33 +50,55 @@ up as the web root.
 
 ## Deploying to cPanel
 
+Most cPanel accounts won't let you repoint the **primary domain's** document
+root away from `public_html` via the Domains UI (only addon domains /
+subdomains support that). So instead of changing the document root, this repo
+ships a [`.cpanel.yml`](.cpanel.yml) deployment file that copies the right
+pieces into place automatically:
+
+- `public/*` → `public_html/`
+- `src/`, `config/`, `vendor/`, `database/` → your home directory, one level
+  above `public_html` — exactly where the app already expects them via
+  `../vendor`, `../config`, `../src`, so **no code changes are needed**.
+
+`.cpanel.yml` currently hardcodes `DEPLOYPATH=/home/riyaprad` — update that if
+the cPanel username ever changes.
+
+Steps:
+
 1. **Database**: cPanel → *MySQL® Databases* → create a database and a user,
-   add the user to the database with all privileges. Put those credentials
-   in `.env` (`DB_HOST` is almost always `localhost` on cPanel).
+   add the user to the database with all privileges. You'll put these
+   credentials in `.env` in step 5 (`DB_HOST` is almost always `localhost`).
 2. **Import schema**: cPanel → *phpMyAdmin* → select your database → *Import*
    → upload `database/schema.sql`.
-3. **Upload files**: upload the whole project (e.g. via Git Version Control
-   in cPanel, or File Manager/FTP) to a folder such as
-   `/home/youruser/riya-portfolio` — **not** directly into `public_html`.
-4. **Set the document root to `public/`**:
-   - If this is an addon domain or subdomain: cPanel → *Domains* → set its
-     *Document Root* to `riya-portfolio/public`.
-   - If it must live at the account's main domain and you can't change the
-     document root, ask your host to point it at the `public/` subfolder, or
-     use a subdomain instead — don't serve the project root directly, since
-     that would (defense-in-depth `.htaccess` aside) put `.env` and app code
-     on a real web-accessible path.
-5. **Create `.env`**: copy `.env.example` to `.env` in the project root (next
-   to `composer.json`, not inside `public/`) and fill in real DB and SMTP
-   values.
+3. **Set up Git Version Control** (cPanel → *Git™ Version Control*):
+   - If you already cloned into `/home/riyaprad/repositories/riya-portfolio`,
+     you're set — that's the working copy `.cpanel.yml` deploys *from*.
+   - Open the repo → **Pull or Deploy** tab → **Update from Remote** to pull
+     the latest commit (which now includes `.cpanel.yml`).
+4. **Deploy**: still on the **Pull or Deploy** tab, click **Deploy HEAD
+   Commit**. This runs the tasks in `.cpanel.yml`, copying `public/*` into
+   `public_html/` and `src/`, `config/`, `vendor/`, `database/` into
+   `/home/riyaprad/`. Re-run this any time you pull new commits.
+5. **Create `.env` on the server**: this file is intentionally never in git.
+   Use cPanel *File Manager* (or Terminal, if available) to create
+   `/home/riyaprad/.env` — i.e. in the home directory, as a sibling of the
+   `config/`/`src/`/`vendor/` folders that step 4 just created, **not** inside
+   `public_html/`. Copy the contents of `.env.example` and fill in the real
+   DB credentials from step 1 plus SMTP values from step 6.
 6. **Gmail SMTP**: use a Google **App Password** (Google Account → Security →
    2-Step Verification → App passwords), not your normal Gmail password.
    `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_SECURE=tls`.
 7. Visit `https://yourdomain/setup` once to create the admin login, then
    `https://yourdomain/login`.
-8. `vendor/` is already committed, so no Composer access is required on the
-   server. If you do update dependencies, run `composer install` locally and
-   commit the updated `vendor/` folder.
+8. `vendor/` is committed to git, so no Composer access is required on the
+   server. If you do update dependencies, run `composer install` locally,
+   commit the updated `vendor/` folder, then repeat steps 3–4.
+
+If you'd rather avoid `.cpanel.yml` entirely, the alternative is creating a
+subdomain (e.g. `app.yourdomain.com`) pointed at a folder whose document root
+you set directly to `.../riya-portfolio/public` — cPanel does allow custom
+document roots for subdomains/addon domains, just not the primary domain.
 
 ## Page-view tracking behavior
 
