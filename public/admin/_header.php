@@ -3,7 +3,7 @@
 ?>
 <header class="admin-header">
     <div class="container admin-header-inner">
-        <span class="admin-brand">मेरो बुडिको वेबसाईट</span>
+        <span class="admin-brand">Riya Portfolio — Admin</span>
         <nav class="admin-nav">
             <a href="/admin/page-visits" class="<?= $activePage === 'page-visits' ? 'active' : '' ?>">Page Visits</a>
             <a href="/admin/map" class="<?= $activePage === 'map' ? 'active' : '' ?>">Map</a>
