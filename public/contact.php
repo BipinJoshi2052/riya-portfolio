@@ -7,18 +7,31 @@ require __DIR__ . '/bootstrap.php';
 use App\Database;
 use App\Mailer;
 
+$isAjax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') !== '';
+
+function respond(bool $isAjax, bool $success, string $message): never
+{
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $success, 'message' => $message]);
+        exit;
+    }
+
+    flash($success ? 'contact_success' : 'contact_error', $message);
+    redirect('/#contact');
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('/');
 }
 
 if (!csrf_verify()) {
-    flash('contact_error', 'Your session expired, please try again.');
-    redirect('/#contact');
+    respond($isAjax, false, 'Your session expired, please refresh the page and try again.');
 }
 
 // Honeypot: bots fill hidden fields, humans never see them.
 if (!empty($_POST['hp_check'])) {
-    redirect('/#contact');
+    respond($isAjax, true, 'Thanks for reaching out!');
 }
 
 $name = trim((string) ($_POST['name'] ?? ''));
@@ -29,8 +42,7 @@ $message = trim((string) ($_POST['message'] ?? ''));
 $_SESSION['old_input'] = compact('name', 'email', 'subject', 'message');
 
 if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    flash('contact_error', 'Please fill in your name, a valid email, and a message.');
-    redirect('/#contact');
+    respond($isAjax, false, 'Please fill in your name, a valid email, and a message.');
 }
 
 $ip = client_ip();
@@ -49,8 +61,7 @@ try {
     $messageId = (int) Database::connection()->lastInsertId();
 } catch (\Throwable $e) {
     error_log('Contact form DB insert failed: ' . $e->getMessage());
-    flash('contact_error', 'Sorry, something went wrong on our end. Please try again shortly.');
-    redirect('/#contact');
+    respond($isAjax, false, 'Sorry, something went wrong on our end. Please try again shortly.');
 }
 
 try {
@@ -67,5 +78,4 @@ try {
 }
 
 unset($_SESSION['old_input']);
-flash('contact_success', "Thanks, {$name}! Your message has been sent.");
-redirect('/#contact');
+respond($isAjax, true, "Thanks, {$name}! Your message has been sent. Expect a reply within a couple of working days.");

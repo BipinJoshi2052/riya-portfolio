@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /login
+Disallow: /logout
+Disallow: /setup
+Disallow: /contact
+
+Sitemap: https://riyapradhan.com.np/sitemap.xml

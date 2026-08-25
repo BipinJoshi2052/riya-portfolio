@@ -3,3 +3,7 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Original Claude Design source bundle + extraction working files (5MB+,
+# fully superseded by public/assets/ + public/index.php). Kept locally only.
+/design/
