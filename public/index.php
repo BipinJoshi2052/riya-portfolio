@@ -50,10 +50,13 @@ unset($_SESSION['old_input']);
             <form method="post" action="/contact" class="contact-form">
                 <?= csrf_field() ?>
 
-                <!-- Honeypot field — real users never fill this in -->
+                <!-- Honeypot field — real users never fill this in. Name/id are
+                     deliberately not "company"/"website"/etc: browser autofill
+                     will silently populate hidden fields with common names,
+                     which would falsely trigger the bot check. -->
                 <div class="hp-field" aria-hidden="true">
-                    <label for="company">Company</label>
-                    <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+                    <label for="hp_check">Leave this field blank</label>
+                    <input type="text" id="hp_check" name="hp_check" tabindex="-1" autocomplete="off">
                 </div>
 
                 <label for="name">Name</label>

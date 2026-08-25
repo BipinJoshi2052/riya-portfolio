@@ -17,7 +17,7 @@ if (!csrf_verify()) {
 }
 
 // Honeypot: bots fill hidden fields, humans never see them.
-if (!empty($_POST['company'])) {
+if (!empty($_POST['hp_check'])) {
     redirect('/#contact');
 }
 
@@ -35,16 +35,22 @@ if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL
 
 $ip = client_ip();
 
-$stmt = Database::connection()->prepare(
-    'INSERT INTO messages (name, email, subject, message, ip_address) VALUES (:name, :email, :subject, :message, :ip)'
-);
-$stmt->execute([
-    'name' => $name,
-    'email' => $email,
-    'subject' => $subject ?: null,
-    'message' => $message,
-    'ip' => $ip,
-]);
+try {
+    $stmt = Database::connection()->prepare(
+        'INSERT INTO messages (name, email, subject, message, ip_address) VALUES (:name, :email, :subject, :message, :ip)'
+    );
+    $stmt->execute([
+        'name' => $name,
+        'email' => $email,
+        'subject' => $subject ?: null,
+        'message' => $message,
+        'ip' => $ip,
+    ]);
+} catch (\Throwable $e) {
+    error_log('Contact form DB insert failed: ' . $e->getMessage());
+    flash('contact_error', 'Sorry, something went wrong on our end. Please try again shortly.');
+    redirect('/#contact');
+}
 
 try {
     Mailer::sendContactNotification([
