@@ -319,8 +319,6 @@ img { max-width: 100%; display: block; }
 .rp-contact-item .value { display: block; font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
 .rp-contact-item.linkedin-link svg.arrow { flex: none; transition: transform .3s ease; }
 .rp-contact-item.linkedin-link:hover svg.arrow { transform: translate(4px, -4px); }
-.rp-contact-item.linkedin-link:hover { background: var(--rp-primary); color: #0a0a0a; }
-.rp-contact-item.linkedin-link:hover .label { color: #0a0a0a; }
 
 .rp-contact-form-card { border: 1px solid rgba(245,245,247,0.14); border-radius: 16px; padding: 32px; background: #0d0d0d; }
 .rp-form { display: flex; flex-direction: column; gap: 16px; }
